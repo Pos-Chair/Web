@@ -15,13 +15,15 @@ http.createServer(function (req, response) {
     if(pathname === '/')
         pathname += 'index.html';
 
-    ext = pathname.substr(pathname.lastIndexOf('.')+1);
+    var ext = pathname.substr(pathname.lastIndexOf('.')+1);
+    var filename = 'web' + pathname;
 
-    fs.readFile('web' + pathname, function(err, dat) {
+    fs.stat(filename, function(err, stat) {
         if(err) {
-            console.log(err);
+            console.error(err);
             response.writeHead(404, {'Context-Type': 'text/html'});
         } else {
+            var type;
             switch(ext) {
             case 'htm':
             case 'html':
@@ -44,11 +46,20 @@ http.createServer(function (req, response) {
                 type = ext;
             }
             response.writeHead(200, {'Context-Type': type});
-
-            response.write(dat.toString());
+            
+            var stream = fs.createReadStream(filename);
+            
+            stream.on('open', function() {
+                stream.pipe(response);
+            });
+            stream.on('error', function(err) {
+                response.end(err);
+                console.error(err);
+            });
+            stream.on('end', function() {
+                response.end();
+            });
         }
-
-        response.end();
 
     });
 
