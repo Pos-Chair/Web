@@ -1,0 +1,2 @@
+#!/bin/bash
+node ~/main.js 1> ~/log 2> ~/err &

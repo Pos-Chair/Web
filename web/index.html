@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Test Spark Login</title>
+    <script src="//cdn.jsdelivr.net/sparkjs/0.5.9/spark.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel='stylesheet' type='text/css' />
+    <link href="/css/main.css" rel='stylesheet' type='text/css' />
+</head>
+
+<body>
+    <div id="content">
+
+        <h3>Pos-Chair</h3>
+    	<div id='spark-login' />
+    </div>
+</body>
+
+<script>
+	sparkLogin(function(data) {
+		console.log(data);
+	});
+</script>
+
+</html>
