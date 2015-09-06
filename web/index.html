@@ -10,78 +10,6 @@
     <link href="/imgs/favicon.ico" rel='shortcut icon' type='image/x-icon' />
 
     <style>
-        h1 {
-            font-size: 4em;
-        }
-        
-        #nav {
-            width: 110%;
-            margin-left: -5%;
-            position: fixed;
-            top: 0;
-            z-index: 100;
-            background-color: #e0e4cc;
-            height: 48px;
-            padding: 5px;
-        }
-
-        #nav table {
-            width: 100%;
-            height: 48px;
-        }
-
-        #nav td {
-            text-align: center;
-            vertical-align: middle;
-            height: 48px;
-        }
-
-        #nav > div {
-            width: 90%;
-            margin: auto;
-            display: block;
-        }
-
-        #nav a {
-            color: #89441d;
-            text-decoration: none;
-            margin: auto;
-            display: inline-block; 
-        }
-
-        #nav h3, #nav h4 {
-            position: relative;
-            top: -15px;
-            padding: 10px;
-        }
-        
-        @keyframes nav_hover {
-            from {
-                background-color: #e0e4cc;
-                border-radius: 0;
-            }
-            to {
-                background-color: #ccc;
-                border-radius: 25px;
-            }
-        } 
-
-        .nav_hover {
-            border-radius: 25px;
-            background-color: #ccc !important;
-            animation-name: nav_hover;
-            animation-duration: 1s;
-        }
-
-        #home > img {
-            height: 48px;
-            display: inline-block;
-        }
-
-        #home > h3 { 
-            display: inline-block;
-            margin-left: 5px;
-        }
         
         #logo > img {
             display: block;
@@ -100,9 +28,6 @@
             margin-top: 60px;
         }
 
-        .hover {
-            box-shadow: 0 1px 15px #555;
-        }
 
         .spark-login-button {
             color: #ff8b25;
@@ -130,6 +55,26 @@
         .section {
             text-align: center;
         }
+
+        .text {
+            font-size: 1.2em;
+            text-align: justify;
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        a {
+            color: #89441d;
+        }
+
+        a:visited {
+            color: #666;
+        }
+
+        .section h1 {
+            color: #89441d;
+        }
+
     </style>
 
 </head>
@@ -157,23 +102,68 @@
         <div id='about' class='section'><div>
             <h1>The Team</h1>
             <img alt='Team Photo' width=640px height=360px />
-            <p>Team info paragraph and things. Very interesting. Yup</p>
+                <div class='text'>
+            
+                    <p>Team info paragraph and things. Very interesting. Yup</p>
+
+                </div>
         </div></div>
 
         <div id='problems' class='section'><div>
             <h1>Posture Problems</h1>
+            <div class='text'>
+
+                <p>Pos-Chair is a pillowcase that turns any chair into a 'smart chair' for correcting back posture.</p>
+
+                <p>
+                According to the <a href='http://www.nytimes.com/2011/06/25/health/25consumer.html?_r=0'>NY Times article "Sit Up Straight. Your Back Thanks You,"</a> up to 80 percent 
+                of Americans experience back pain at some point in their lives, and each year 15 percent of all adults are treated for such problems as herniated discs, spinal stenosis 
+                or lumbar pain... Back pain is notoriously difficult, and expensive, to remedy.
+                </p>
+
+                <p>
+                The Pos-Chair pillowcase integrates force sensors to determine a person's weight distribution on the chair and a ping sensor to determine a person's distance from the 
+                back of the chair. (something about how spark is connected here) Depending on distance and force distribution, the user will see 'good' or 'bad' posture in the 
+                graphical display which occurs in real time in our Pos-Chair iOS app. We have also created a web application that (mention here). (additional important info)
+                </p>
+
+
+            </div>
         </div></div>
         
         <div id='whatis' class='section'><div>
             <h1>What <i>is</i> Pos-Chair?</h1>
+            <div class='text'>
+
+                <p> 
+                Our inspiration for Pos-Chair comes from personal experiences and a need we see to decrease back pain associated with sitting long hours in the workforce. With Pos-Chair,
+                people have access to the iOS app or web application which will notify them how to correct their sitting position. With practice, users can identify a correct sitting 
+                position, improve their posture longterm and decrease risk of pain and more serious back problems. Because Pos-Chair is a cover for a chair it can be used on any chair 
+                and is transportable. No sensors are attached to the person. Pos-Chair cover has application to help employees work better because with good back positioning they 
+                experience decreased discomfort and pain. As a team comprised of undergraduate and Ph.D students, we have identified application for Pos-Chair in any situation which 
+                requires the user to sit whether that be in class lecture, at a research desk, at work, or at home.
+                </p>
+
+                <p>
+                When people decide to use Pos-Chair, they are correcting their posture - reducing pain and risks such as herniated discs, spinal stenosis and lumbar pain - 
+                improving their overall health.
+                </p>
+
+
+
+            </div>
         </div></div>
+        
+        <div id="footer">
+            <img src="/imgs/full_logo.png" />
+        </div>
 
     </div>
 </body>
 
 <script>
 	sparkLogin(function(data) {
-		console.log(data);
+		
 	});
 
     $(document).ready(function() {

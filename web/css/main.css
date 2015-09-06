@@ -4,4 +4,98 @@
 
 body {
     background-color: #e0e4cc;
+    overflow-x: hidden;
+}
+
+.hover {
+    box-shadow: 0 1px 15px #555;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+#nav {
+    width: 110%;
+    margin-left: -5%;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    background-color: #e0e4cc;
+    height: 48px;
+    padding: 5px;
+}
+
+#nav table {
+    width: 100%;
+    height: 48px;
+}
+
+#nav td {
+    text-align: center;
+    vertical-align: middle;
+    height: 48px;
+}
+
+#nav > div {
+    width: 90%;
+    margin: auto;
+    display: block;
+}
+
+#nav a {
+    color: #89441d;
+    text-decoration: none;
+    margin: auto;
+    display: inline-block; 
+}
+
+#nav h3, #nav h4 {
+    position: relative;
+    top: -15px;
+    padding: 10px;
+}
+
+@keyframes nav_hover {
+    from {
+        background-color: #e0e4cc;
+        border-radius: 0;
+    }
+    to {
+        background-color: #ccc;
+        border-radius: 25px;
+    }
+} 
+
+.nav_hover {
+    border-radius: 25px;
+    background-color: #ccc !important;
+    animation-name: nav_hover;
+    animation-duration: 1s;
+}
+
+#home > img {
+    height: 48px;
+    display: inline-block;
+}
+
+#home > h3 { 
+    display: inline-block;
+    margin-left: 5px;
+}
+
+#footer {
+    width: 100vw;
+    height: 60px;
+    background-color: #333;
+    margin-left: -1%;
+    margin-bottom: -1%;
+}
+
+#footer > img {
+    height: 48px;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    top: 5px;
 }
