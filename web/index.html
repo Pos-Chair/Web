@@ -118,7 +118,7 @@
 
         <div id='about' class='section'><div>
             <h1>The Team</h1>
-            <img alt='Team Photo' width=640px height=360px />
+            <img src='/imgs/group.jpg' alt='Team Photo' width="600px"/>
                 <div class='text'>
             
                     <p>Team info paragraph and things. Very interesting. Yup</p>
@@ -413,8 +413,8 @@
                     chartBRL.render();
                     
                     var difRL = Math.abs(dataPoints[0][dataPoints[0].length-1].y - dataPoints[1][dataPoints[1].length-1].y);
-                    var ratFB = Math.abs((5000 - dataPoints[0][dataPoints[0].length-1].y + dataPoints[1][dataPoints[1].length-1].y) /
-                                (5000 - dataPoints[2][dataPoints[2].length-1].y + dataPoints[3][dataPoints[3].length-1].y));
+                    var ratFB = Math.round(1000 * (5000 - dataPoints[0][dataPoints[0].length-1].y + dataPoints[1][dataPoints[1].length-1].y) /
+                                (5000 - dataPoints[2][dataPoints[2].length-1].y + dataPoints[3][dataPoints[3].length-1].y)) / 1000;
                     dataF.setValue(0, 1, difRL);
                     dataFB.setValue(0, 1, ratFB);
                     
