@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Test Spark Login</title>
+	<title>Pos-Chair</title>
     <script type='text/javascript' src="https://www.google.com/jsapi"></script>
     <script src="http://cdn.jsdelivr.net/sparkjs/0.5.2/spark.min.js"></script>
     <script src="/js/jquery-1.11.3.min.js"></script>
@@ -367,7 +367,7 @@
                             if(!err) {
                                 push(0, {
                                     x: t,
-                                    y: 2500 - data.result
+                                    y: data.result
                                 });
                             }
                             v1 = false;
@@ -379,7 +379,7 @@
                             if(!err) {
                                 push(1, {
                                     x: t,
-                                    y: 2500 - data.result
+                                    y: data.result
                                 });
                             }
                             v2 = false;
@@ -391,7 +391,7 @@
                             if(!err) {
                                 push(2, {
                                     x: t,
-                                    y: 2500 - data.result
+                                    y: data.result
                                 });
                             }
                             v3 = false;
@@ -403,7 +403,7 @@
                             if(!err) {
                                 push(3, {
                                     x: t,
-                                    y: 2500 - data.result
+                                    y: data.result
                                 });
                             }
                             v4 = false;
@@ -413,8 +413,8 @@
                     chartBRL.render();
                     
                     var difRL = Math.abs(dataPoints[0][dataPoints[0].length-1].y - dataPoints[1][dataPoints[1].length-1].y);
-                    var ratFB = Math.abs((dataPoints[0][dataPoints[0].length-1].y + dataPoints[1][dataPoints[1].length-1].y) /
-                                (dataPoints[2][dataPoints[2].length-1].y + dataPoints[3][dataPoints[3].length-1].y));
+                    var ratFB = Math.abs((5000 - dataPoints[0][dataPoints[0].length-1].y + dataPoints[1][dataPoints[1].length-1].y) /
+                                (5000 - dataPoints[2][dataPoints[2].length-1].y + dataPoints[3][dataPoints[3].length-1].y));
                     dataF.setValue(0, 1, difRL);
                     dataFB.setValue(0, 1, ratFB);
                     
@@ -440,9 +440,9 @@
 
             optF = {
                 width: 250, height: 250,
-                redFrom: 500, redTo: 2000,
-                yellowFrom: 100, yellowTo: 500,
-                greenFrom: 0, greenTo: 100,
+                redFrom: 1500, redTo: 2000,
+                yellowFrom: 500, yellowTo: 1500,
+                greenFrom: 0, greenTo: 500,
                 minorTicks: 5, max: 2000
             };
 
@@ -462,10 +462,10 @@
 
             optFB = {
                 width: 250, height: 250,
-                redFrom: 0, redTo: 8,
-                yellowFrom: 8, yellowTo: 15,
-                greenFrom: 15, greenTo: 30,
-                minorTicks: 5, max: 30
+                redFrom: 0, redTo: .25,
+                yellowFrom: .25, yellowTo: 1,
+                greenFrom: 1, greenTo: 5,
+                minorTicks: 5, max: 5
             };
 
             chartFB = new google.visualization.Gauge(document.getElementById('chartFB'));
