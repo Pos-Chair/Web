@@ -7,6 +7,7 @@ var fs = require('fs');
 var url = require('url');
 var ns = require('node-session');
 var spark = require('spark');
+var qs = require('querystring');
 
 var alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 var secret = '';
@@ -27,7 +28,8 @@ http.createServer(function (req, response) {
 
         if(pathname === '/')
             pathname += 'index.html';
-
+        if(pathname.indexOf('?') >= 0) 
+            pathname = pathname.substr(0, pathname.indexOf('?'));
         var ext = pathname.substr(pathname.lastIndexOf('.')+1);
         var filename = 'web' + pathname;
 

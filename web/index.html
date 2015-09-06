@@ -3,8 +3,10 @@
 
 <head>
 	<title>Test Spark Login</title>
-    <script src="//cdn.jsdelivr.net/sparkjs/0.5.9/spark.min.js"></script>
+    <script type='text/javascript' src="https://www.google.com/jsapi"></script>
+    <script src="http://cdn.jsdelivr.net/sparkjs/0.5.2/spark.min.js"></script>
     <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src='/js/canvasjs.min.js'></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel='stylesheet' type='text/css' />
     <link href="/css/main.css" rel='stylesheet' type='text/css' />
     <link href="/imgs/favicon.ico" rel='shortcut icon' type='image/x-icon' />
@@ -52,6 +54,20 @@
             width: 238px;
         }
 
+        .close-modal {
+            color: #fff;
+            background-color: #000;
+            border-color: #fff;
+            border-width: 5px;
+            border-style: solid;
+            height: 20px !important; 
+            width: 20px !important;
+            text-indent: 0 !important;
+            border-radius: 100%;
+            text-align: center;
+            text-decoration: none;
+        }
+
         .section {
             text-align: center;
         }
@@ -74,6 +90,7 @@
         .section h1 {
             color: #89441d;
         }
+        
 
     </style>
 
@@ -129,46 +146,63 @@
             <h1>What <i>is</i> Pos-Chair?</h1>
             <div class='text'>
 
-		<p>
-                The Pos-Chair pillowcase integrates force sensors to determine a person's weight distribution on the chair and a ping sensor to determine a person's distance from the 
-                back of the chair. (something about how spark is connected here) Depending on distance and force distribution, the user will see 'good' or 'bad' posture in the 
-                graphical display which occurs in real time in our Pos-Chair iOS app. We have also created a web application that (mention here). (additional important info)
+	        	<p>
+                The Pos-Chair seat cover integrates force sensors to determine a person's weight distribution on the chair and a ping sensor to determine a person's distance from the 
+                back of the chair.  Multiple Round Force Sensors strategically placed across the cover interface directly with the Particle Core IoT chip, which communicates with the 
+                iOS and Web app via WiFi to provide force data for posture analysis. Depending on distance and force distribution, the user will be able to monitor the quality of 
+                his/her posture through the real-time output on our Pos-Chair iOS app. The app was created with the Particle iOS Cloud SDK and communicates with a Particle Internet 
+                Button for rapid transfer of sensor information. We have also created a web application that provides a clean presentation of our product, and offers login service 
+                allowing users to view graphical real-time data from their Pos-Chair on the web as well as through our app.
                 </p>
                 
-                <p> 
-                Our inspiration for Pos-Chair comes from personal experiences and a need we see to decrease back pain associated with sitting long hours in the workforce. With Pos-Chair,
-                people have access to the iOS app or web application which will notify them how to correct their sitting position. With practice, users can identify a correct sitting 
-                position, improve their posture longterm and decrease risk of pain and more serious back problems. Because Pos-Chair is a cover for a chair it can be used on any chair 
-                and is transportable. No sensors are attached to the person. Pos-Chair cover has application to help employees work better because with good back positioning they 
-                experience decreased discomfort and pain. As a team comprised of undergraduate and Ph.D students, we have identified application for Pos-Chair in any situation which 
-                requires the user to sit whether that be in class lecture, at a research desk, at work, or at home.
+                <p>  
+                Our inspiration for Pos-Chair comes from personal experiences and a need we see to decrease back pain associated with sitting long hours in the workforce. With 
+                Pos-Chair, people have access to the iOS app or web application which will notify them how to correct their sitting position. With practice, users can identify a 
+                correct sitting position, improve their posture longterm and decrease risk of pain and more serious back problems at a relatively low cost. Because Pos-Chair is a cover 
+                for a chair it can be used on any chair and is transportable. No sensors are attached to the person. Pos-Chair cover has application to help employees work better 
+                because with good back positioning they experience decreased discomfort and pain. As a team comprised of undergraduate and Ph.D students, we have identified application 
+                for Pos-Chair in any situation which requires the user to sit whether that be in a class lecture, at a research desk, at work, or at home.
                 </p>
 
                 <p>
-                When people decide to use Pos-Chair, they are correcting their posture - reducing pain and risks such as herniated discs, spinal stenosis and lumbar pain - 
-                improving their overall health.
+                When people decide to use Pos-Chair, they are correcting their posture - reducing pain and risks such as herniated discs, spinal stenosis and lumbar pain - and 
+                improving their overall health with cutting edge technology at the forefront of ergonomics.
                 </p>
-
 
 
             </div>
         </div></div>
         
-        
+        <div id="app" class='section'><div>
+            <h1 style='margin-bottom: 10px'>Live Feed</h1>
+            <div id='chartF' style='float: left;'></div>
+            <div id='chartFRL' style="width: 900px; height: 250px; margin: 10px; float: right;"></div>
+            <div id='chartBRL' style="width: 900px; height: 250px; margin: 10px; float: right;"></div>
+            <div id='chartFB' style='float: left; clear: left'></div>
+        </div></div>
+
+        <!--
         <div id="footer">
             <img src="/imgs/full_logo.png" />
-        </div>
+        </div>      
+        -->
 
     </div>
 </body>
 
 <script>
-	sparkLogin(function(data) {
-		
-	});
+    var device = null, chartFRLi = null, chartBRL = null;
 
+    sparkLogin(function(data) {
+
+    });
+
+    google.load("visualization", "1", {packages: ['gauge']})
+    
     $(document).ready(function() {
         
+        $('#app').hide();
+
         /*
          * Scroll Function - Credits to hanoo.org
          */
@@ -205,6 +239,242 @@
         }, function() {
             $(this).removeClass('nav_hover');
         });
+            
+        $('.spark-login-button').click(function() {
+            $('.close-modal').text('x');
+        });
+
+        var dataPoints = [[], [], [], []];
+
+        chartFRL = new CanvasJS.Chart('chartFRL', {
+            zoomEnabled: true,
+            title: {
+                text: "Front Right vs Left Weight Distribution"
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                verticalAlign: 'top',
+                horizontalAlign: 'center',
+                fontSize: 14,
+                fontWeight: 'bold',
+                fontFamily: 'calibri',
+                fontColor: 'dimGrey'
+            },
+            axisX: {
+                title: "Time"
+            },
+            data: [{
+                //Series1 (R)
+                type: 'line',
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: "Right Side",
+                dataPoints: dataPoints[0]
+            },
+            {
+                //Series2 (L)
+                type: 'line',
+                xValueType: 'dateTime',
+                showInLegend: true,
+                name: "Left Side",
+                dataPoints: dataPoints[1]
+            }],
+            legend: {
+                cursor: 'pointer',
+                itemclick: function(e) {
+                    if(typeof(e.dataSeries.visible) === 'undefined' || e.dataSeries.visible) {
+                        e.dataSeries.visible = false;
+                    } else {
+                        e.dataSeries.visible = true;
+                    }
+                    
+                    chartFRL.render();
+                }
+            }
+        });
+
+        chartBRL = new CanvasJS.Chart('chartBRL', {
+            zoomEnabled: true,
+            title: {
+                text: "Back Right vs Left Weight Distribution"
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                verticalAlign: 'top',
+                horizontalAlign: 'center',
+                fontSize: 14,
+                fontWeight: 'bold',
+                fontFamily: 'calibri',
+                fontColor: 'dimGrey'
+            },
+            axisX: {
+                title: "Time"
+            },
+            data: [{
+                //Series1 (R)
+                type: 'line',
+                xValueType: "dateTime",
+                showInLegend: true,
+                name: "Right Side",
+                dataPoints: dataPoints[2]
+            },
+            {
+                //Series2 (L)
+                type: 'line',
+                xValueType: 'dateTime',
+                showInLegend: true,
+                name: "Left Side",
+                dataPoints: dataPoints[3]
+            }],
+            legend: {
+                cursor: 'pointer',
+                itemclick: function(e) {
+                    if(typeof(e.dataSeries.visible) === 'undefined' || e.dataSeries.visible) {
+                        e.dataSeries.visible = false;
+                    } else {
+                        e.dataSeries.visible = true;
+                    }
+                    
+                    chartBRL.render();
+                }
+            }
+        });
+
+        function push(i, obj) {
+            dataPoints[i].push(obj);
+        }
+        
+        var v1 = false, v2 = false, v3 = false, v4 = false;
+
+        spark.on('login', function() {
+            var e = jQuery.Event('keydown');
+            e.which = 13;
+            $('form').trigger(e);
+            $('#app').show();
+            $('html, body').animate({scrollTop: $('#app').offset().top - 48}, 1000, 'swing');
+
+            setInterval(function() {
+                spark.listDevices().then(function(devices) {
+                    vars = ['seatR', 'seatL', 'backR', 'backL'];
+                    t = Date.now();
+                    if(!v1) {
+                        v1 = true;
+                        devices[0].getVariable(vars[0], function(err, data) {
+                            if(!err) {
+                                push(0, {
+                                    x: t,
+                                    y: 2500 - data.result
+                                });
+                            }
+                            v1 = false;
+                        });
+                    }
+                    if(!v2) {
+                        v2 = true;
+                        devices[0].getVariable(vars[1], function(err, data) {
+                            if(!err) {
+                                push(1, {
+                                    x: t,
+                                    y: 2500 - data.result
+                                });
+                            }
+                            v2 = false;
+                        });
+                    }
+                    if(!v3) {
+                        v3 = true;
+                        devices[0].getVariable(vars[2], function(err, data) {
+                            if(!err) {
+                                push(2, {
+                                    x: t,
+                                    y: 2500 - data.result
+                                });
+                            }
+                            v3 = false;
+                        });
+                    }
+                    if(!v4) {
+                        v4 = true;
+                        devices[0].getVariable(vars[3], function(err, data) {
+                            if(!err) {
+                                push(3, {
+                                    x: t,
+                                    y: 2500 - data.result
+                                });
+                            }
+                            v4 = false;
+                        });
+                    }
+                    chartFRL.render();
+                    chartBRL.render();
+                    
+                    var difRL = Math.abs(dataPoints[0][dataPoints[0].length-1].y - dataPoints[1][dataPoints[1].length-1].y);
+                    var ratFB = Math.abs((dataPoints[0][dataPoints[0].length-1].y + dataPoints[1][dataPoints[1].length-1].y) /
+                                (dataPoints[2][dataPoints[2].length-1].y + dataPoints[3][dataPoints[3].length-1].y));
+                    dataF.setValue(0, 1, difRL);
+                    dataFB.setValue(0, 1, ratFB);
+                    
+                    chartF.draw(dataF, optF);
+                    chartFB.draw(dataFB, optFB);
+                });
+            }, 4000);
+        })
+        
+        var dataF, dataFB;
+        var optF, optFB;
+        var chartF, chartFB;
+
+        google.setOnLoadCallback(function() {
+            setTimeout(drawChartF, 3000);
+        });
+        function drawChartF() {
+            
+            dataF = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['LR Offset', 0]
+            ]);
+
+            optF = {
+                width: 250, height: 250,
+                redFrom: 500, redTo: 2000,
+                yellowFrom: 100, yellowTo: 500,
+                greenFrom: 0, greenTo: 100,
+                minorTicks: 5, max: 2000
+            };
+
+            chartF = new google.visualization.Gauge(document.getElementById('chartF'));
+
+            chartF.draw(dataF, optF);
+
+            drawChartFB();
+        }
+        
+        function drawChartFB() {
+         
+            dataFB = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['FB Ratio', 15]
+            ]);
+
+            optFB = {
+                width: 250, height: 250,
+                redFrom: 0, redTo: 8,
+                yellowFrom: 8, yellowTo: 15,
+                greenFrom: 15, greenTo: 30,
+                minorTicks: 5, max: 30
+            };
+
+            chartFB = new google.visualization.Gauge(document.getElementById('chartFB'));
+
+            chartFB.draw(dataFB, optFB);
+
+            drawChartRF();
+
+        }
 
     });
 </script>
