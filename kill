@@ -1,0 +1,2 @@
+#!/bin/bash
+kill -9 $(ps -e |grep node |head -c5)
